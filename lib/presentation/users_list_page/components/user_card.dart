@@ -11,7 +11,6 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(user.firstName);
     return ListTile(
       onTap: () {
         context.goNamed(PathNames.userDetail, extra: user.id);

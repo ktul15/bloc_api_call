@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bloc_api_call_demo/data/req_res_api/models/user.dart';
-import 'package:bloc_api_call_demo/data/req_res_api/models/users_list.dart';
 import 'package:bloc_api_call_demo/utils/api_exceptions.dart';
 import 'package:bloc_api_call_demo/utils/api_urls.dart';
 import 'package:http/http.dart' as http;
@@ -27,9 +25,6 @@ class ReqResApiClient {
         return responseJson;
       case 400:
         throw BadRequestException(response.body.toString());
-      case 401:
-      case 403:
-        throw UnauthorisedException(response.body.toString());
       case 500:
       default:
         throw FetchDataException(

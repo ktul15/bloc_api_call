@@ -14,6 +14,12 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
     on<UserDetailRequested>((event, emit) async {
       await _onUserDetailRequested(event, emit);
     });
+    on<UserDetailAddToFirestore>((event, emit) async {
+      await _onUserDetailAddToFirestore(event, emit);
+    });
+    on<UserDetailDeleteFromFirestore>((event, emit) async {
+      await _onUserDetailDeleteFromFirestore(event, emit);
+    });
   }
 
   final UsersRepository _usersRepository;
@@ -28,5 +34,16 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
     } catch (e) {
       debugPrint("error from detail bloc : $e");
     }
+  }
+
+  Future<void> _onUserDetailAddToFirestore(
+      UserDetailAddToFirestore event, Emitter<UserDetailState> emit) async {
+    await _usersRepository.addDataToFireStore(event.user);
+  }
+
+  Future<void> _onUserDetailDeleteFromFirestore(
+      UserDetailDeleteFromFirestore event,
+      Emitter<UserDetailState> emit) async {
+    await _usersRepository.deleteDataFromFirestore(event.userId);
   }
 }

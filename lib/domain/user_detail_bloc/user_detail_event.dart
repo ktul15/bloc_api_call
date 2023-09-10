@@ -10,5 +10,23 @@ class UserDetailRequested extends UserDetailEvent {
   const UserDetailRequested({required this.userId});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [userId];
+}
+
+class UserDetailAddToFirestore extends UserDetailEvent {
+  final User user;
+
+  const UserDetailAddToFirestore({required this.user});
+
+  @override
+  List<Object?> get props => [user];
+}
+
+class UserDetailDeleteFromFirestore extends UserDetailEvent {
+  final int userId;
+
+  const UserDetailDeleteFromFirestore({required this.userId});
+
+  @override
+  List<Object?> get props => [userId];
 }

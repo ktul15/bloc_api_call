@@ -1,4 +1,5 @@
 import 'package:bloc_api_call_demo/data/repository/usersRepository.dart';
+import 'package:bloc_api_call_demo/data/req_res_api/models/user.dart';
 import 'package:bloc_api_call_demo/domain/user_detail_bloc/user_detail_bloc.dart';
 import 'package:bloc_api_call_demo/presentation/user_detail_page.dart/components/firebase_buttons.dart';
 import 'package:bloc_api_call_demo/presentation/users_list_page/components/user_card.dart';
@@ -34,6 +35,16 @@ class UserDetailView extends StatefulWidget {
 class _UserDetailViewState extends State<UserDetailView> {
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<UserDetailBloc>();
+
+    void addDataToFirestore(User user) {
+      bloc.add(UserDetailAddToFirestore(user: user));
+    }
+
+    void deleteDataFromFireStore(int userId) {
+      bloc.add(UserDetailDeleteFromFirestore(userId: userId));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("User Detail"),
@@ -50,7 +61,11 @@ class _UserDetailViewState extends State<UserDetailView> {
             return Column(
               children: [
                 UserCard(user: state.user),
-                const FirebaseButtons(),
+                FirebaseButtons(
+                  addDataToFireStore: () => addDataToFirestore(state.user),
+                  deleteDataFromFireStore: () =>
+                      deleteDataFromFireStore(state.user.id!),
+                ),
               ],
             );
           }

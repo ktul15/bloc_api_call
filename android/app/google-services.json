@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451451856056",
+    "project_id": "reqres-api-bloc",
+    "storage_bucket": "reqres-api-bloc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451451856056:android:4d04afa27e2521dba8c04d",
+        "android_client_info": {
+          "package_name": "com.example.bloc_api_call_demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV9g2Dkn2_3l-au3sXEEk5NvlDWPJdnkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
