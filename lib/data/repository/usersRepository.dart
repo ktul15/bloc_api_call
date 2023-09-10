@@ -14,6 +14,7 @@ class UsersRepository {
 
   Future<UsersList> fetchUsersByPage(int pageNum) async {
     final res = await _apiClient.get("${ApiUrls.usersListEndpoint}$pageNum");
+    debugPrint("res: $res");
     return UsersList.fromJson(res);
   }
 

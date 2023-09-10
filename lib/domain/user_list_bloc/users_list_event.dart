@@ -4,10 +4,15 @@ part of 'users_list_bloc.dart';
 sealed class UsersListEvent extends Equatable {}
 
 class UsersListRequested extends UsersListEvent {
-  final int pageNum;
-
-  UsersListRequested({required this.pageNum});
+  UsersListRequested();
 
   @override
-  List<Object?> get props => [pageNum];
+  List<Object?> get props => [];
+}
+
+class UsersListNextPageRequested extends UsersListEvent {
+  UsersListNextPageRequested();
+
+  @override
+  List<Object?> get props => [];
 }

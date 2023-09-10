@@ -11,7 +11,7 @@ class UsersListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UsersListBloc(usersRepository: UsersRepository())
-        ..add(UsersListRequested(pageNum: 1)),
+        ..add(UsersListRequested()),
       child: const UsersListView(),
     );
   }
@@ -25,6 +25,35 @@ class UsersListView extends StatefulWidget {
 }
 
 class _UsersListViewState extends State<UsersListView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      context.read<UsersListBloc>().add(UsersListRequested());
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,21 +63,32 @@ class _UsersListViewState extends State<UsersListView> {
       body: BlocConsumer<UsersListBloc, UsersListState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is UsersListLoading) {
+          if (state is UsersListLoading || state is UsersListNextPageLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (state is UsersListSuccess) {
             return ListView.builder(
-              itemCount: state.usersList.data!.length,
+              controller: _scrollController,
+              itemCount: state.users.length,
               itemBuilder: ((context, index) {
-                final currentUser = state.usersList.data![index];
+                final currentUser = state.users[index];
+                if (index > state.users.length) {
+                  return const Center(
+                    child: SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(strokeWidth: 1.5),
+                    ),
+                  );
+                }
                 return UserCard(
                   user: currentUser,
                 );
               }),
             );
           } else {
+            debugPrint(state.toString());
             return const Center(
               child: Text("error"),
             );

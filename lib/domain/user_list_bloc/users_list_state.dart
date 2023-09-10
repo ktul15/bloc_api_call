@@ -14,10 +14,58 @@ final class UsersListLoading extends UsersListState {
 }
 
 final class UsersListSuccess extends UsersListState {
-  final UsersList usersList;
+  final List<User> users;
+  final int pageNum;
 
-  UsersListSuccess({required this.usersList});
+  UsersListSuccess({
+    required this.users,
+    required this.pageNum,
+  });
 
   @override
-  List<Object?> get props => [usersList];
+  List<Object?> get props => [users, pageNum];
+}
+
+final class UsersListFailure extends UsersListState {
+  final String error;
+
+  UsersListFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+
+final class UsersListNextPageLoading extends UsersListState {
+  final List<User> users;
+  final int pageNum;
+
+  UsersListNextPageLoading({
+    required this.users,
+    required this.pageNum,
+  });
+
+  @override
+  List<Object?> get props => [users, pageNum];
+}
+
+final class UsersListNextPageSuccess extends UsersListState {
+  final List<User> users;
+  final int pageNum;
+
+  UsersListNextPageSuccess({
+    required this.users,
+    required this.pageNum,
+  });
+
+  @override
+  List<Object?> get props => [users, pageNum];
+}
+
+final class UsersListNextPageFailure extends UsersListState {
+  final String error;
+
+  UsersListNextPageFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }

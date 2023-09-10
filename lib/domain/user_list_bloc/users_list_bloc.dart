@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_api_call_demo/data/repository/usersRepository.dart';
+import 'package:bloc_api_call_demo/data/req_res_api/models/user.dart';
 import 'package:bloc_api_call_demo/data/req_res_api/models/users_list.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +24,35 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
     UsersListRequested event,
     Emitter<UsersListState> emit,
   ) async {
-    emit(UsersListLoading());
+    if (state is UsersListInitial) {
+      emit(UsersListLoading());
+    }
+
+    int pageToFetch = 1;
+    List<User> users = [];
+    if (state is UsersListSuccess) {
+      pageToFetch = (state as UsersListSuccess).pageNum + 1;
+      users = (state as UsersListSuccess).users;
+      debugPrint("pageToFetch $pageToFetch");
+      debugPrint("users $users");
+    }
 
     try {
-      final usersList = await _usersRepository.fetchUsersByPage(event.pageNum);
-      emit(UsersListSuccess(usersList: usersList));
+      final usersList = await _usersRepository.fetchUsersByPage(pageToFetch);
+      users.addAll(usersList.data!);
+      debugPrint("users: $users");
+      emit(UsersListSuccess(
+        users: users,
+        pageNum: pageToFetch,
+      ));
+
+      debugPrint((state as UsersListSuccess).users.length.toString());
+      if ((state as UsersListSuccess).users.length < 12) {
+        add(UsersListRequested());
+      }
     } catch (e) {
       debugPrint("error from bloc: $e");
+      emit(UsersListFailure(error: e.toString()));
     }
   }
 }
