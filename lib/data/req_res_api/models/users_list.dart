@@ -1,9 +1,11 @@
+import 'package:bloc_api_call_demo/data/req_res_api/models/user.dart';
+
 class UsersList {
   int? page;
   int? perPage;
   int? total;
   int? totalPages;
-  List<Data>? data;
+  List<User>? data;
   Support? support;
 
   UsersList(
@@ -20,9 +22,9 @@ class UsersList {
     total = json['total'];
     totalPages = json['total_pages'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <User>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(User.fromJson(v));
       });
     }
     support =
@@ -41,34 +43,6 @@ class UsersList {
     if (support != null) {
       data['support'] = support!.toJson();
     }
-    return data;
-  }
-}
-
-class Data {
-  int? id;
-  String? email;
-  String? firstName;
-  String? lastName;
-  String? avatar;
-
-  Data({this.id, this.email, this.firstName, this.lastName, this.avatar});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    email = json['email'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    avatar = json['avatar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['email'] = email;
-    data['first_name'] = firstName;
-    data['last_name'] = lastName;
-    data['avatar'] = avatar;
     return data;
   }
 }

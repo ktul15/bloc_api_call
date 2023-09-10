@@ -1,5 +1,5 @@
 import 'package:bloc_api_call_demo/data/repository/usersRepository.dart';
-import 'package:bloc_api_call_demo/domain/bloc/users_list_bloc.dart';
+import 'package:bloc_api_call_demo/domain/user_list_bloc/users_list_bloc.dart';
 import 'package:bloc_api_call_demo/presentation/users_list_page/components/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
