@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_api_call_demo/data/repository/usersRepository.dart';
 import 'package:bloc_api_call_demo/data/req_res_api/models/user.dart';
+import 'package:bloc_api_call_demo/utils/api_exceptions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -31,19 +32,28 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
     try {
       final user = await _usersRepository.fetchUserById(event.userId);
       emit(UserDetailSuccess(user: user));
-    } catch (e) {
+    } on UserNotFoundFailure catch (e) {
+      emit(UserDetailFailure(error: e.toString()));
       debugPrint("error from detail bloc : $e");
     }
   }
 
   Future<void> _onUserDetailAddToFirestore(
       UserDetailAddToFirestore event, Emitter<UserDetailState> emit) async {
-    await _usersRepository.addDataToFireStore(event.user);
+    try {
+      await _usersRepository.addDataToFireStore(event.user);
+    } catch (e) {
+      emit(UserDetailFailure(error: e.toString()));
+    }
   }
 
   Future<void> _onUserDetailDeleteFromFirestore(
       UserDetailDeleteFromFirestore event,
       Emitter<UserDetailState> emit) async {
-    await _usersRepository.deleteDataFromFirestore(event.userId);
+    try {
+      await _usersRepository.deleteDataFromFirestore(event.userId);
+    } catch (e) {
+      emit(UserDetailFailure(error: e.toString()));
+    }
   }
 }

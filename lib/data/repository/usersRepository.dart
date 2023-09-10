@@ -1,8 +1,10 @@
 import 'package:bloc_api_call_demo/data/req_res_api/models/user.dart';
 import 'package:bloc_api_call_demo/data/req_res_api/models/users_list.dart';
 import 'package:bloc_api_call_demo/data/req_res_api/req_res_api_client.dart';
+import 'package:bloc_api_call_demo/utils/api_exceptions.dart';
 import 'package:bloc_api_call_demo/utils/api_urls.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class UsersRepository {
   final ReqResApiClient _apiClient = ReqResApiClient();
@@ -17,6 +19,12 @@ class UsersRepository {
 
   Future<User> fetchUserById(int userId) async {
     final res = await _apiClient.get("${ApiUrls.userEndpoint}/$userId");
+
+    debugPrint("res: $res");
+    if (!res.containsKey('data')) {
+      throw UserNotFoundFailure();
+    }
+
     return User.fromJson(res["data"]);
   }
 

@@ -16,6 +16,11 @@ class AppException implements Exception {
   }
 }
 
+class UserNotFoundFailure extends AppException {
+  UserNotFoundFailure([String message = ''])
+      : super(message, "User with that Id was not found!");
+}
+
 class FetchDataException extends AppException {
   FetchDataException([String message = ""])
       : super(message, "Error During Communication: ");

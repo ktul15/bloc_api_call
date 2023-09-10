@@ -20,5 +20,14 @@ class UserDetailSuccess extends UserDetailState {
   const UserDetailSuccess({required this.user});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
+}
+
+class UserDetailFailure extends UserDetailState {
+  final String error;
+
+  const UserDetailFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }

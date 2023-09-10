@@ -50,7 +50,13 @@ class _UserDetailViewState extends State<UserDetailView> {
         title: const Text("User Detail"),
       ),
       body: BlocConsumer<UserDetailBloc, UserDetailState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is UserDetailFailure) {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
+          }
+        },
         builder: (context, state) {
           if (state is UserDetailLoading) {
             return const Center(

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class ReqResApiClient {
   Future<dynamic> get(String url) async {
-    var responseJson;
+    dynamic responseJson;
     try {
       final response = await http.get(Uri.parse("${ApiUrls.baseUrl}$url"));
       responseJson = _returnResponse(response);
@@ -21,14 +21,13 @@ class ReqResApiClient {
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());
-        print("responseJson: $responseJson");
         return responseJson;
       case 400:
         throw BadRequestException(response.body.toString());
       case 500:
       default:
         throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+            'Error occurred while Communication with Server with StatusCode : ${response.statusCode}');
     }
   }
 }
