@@ -1,4 +1,4 @@
-import 'package:bloc_api_call_demo/presentation/users_list_page/users_list_page.dart';
+import 'package:bloc_api_call_demo/router/go_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,14 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const UsersListPage(),
+      routerConfig: go_router,
     );
   }
 }
