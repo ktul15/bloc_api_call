@@ -5,7 +5,7 @@ import 'package:bloc_api_call_demo/utils/api_urls.dart';
 class UsersRepository {
   final ReqResApiClient _apiClient = ReqResApiClient();
 
-  Future<UsersList> fetchUsersByPage(String pageNum) async {
+  Future<UsersList> fetchUsersByPage(int pageNum) async {
     final res = await _apiClient.get("${ApiUrls.usersEndpoint}$pageNum");
     return UsersList.fromJson(res);
   }
