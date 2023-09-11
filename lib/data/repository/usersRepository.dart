@@ -41,11 +41,21 @@ class UsersRepository {
     }
   }
 
-  Future<void> addDataToFireStore(User user) async {
-    await _users.doc(user.id.toString()).set(user.toJson());
+  Future<Either<AppException, void>> addDataToFireStore(User user) async {
+    try {
+      await _users.doc(user.id.toString()).set(user.toJson());
+      return right(null);
+    } on AppException catch (e) {
+      return left(e);
+    }
   }
 
-  Future<void> deleteDataFromFirestore(int userId) async {
-    await _users.doc(userId.toString()).delete();
+  Future<Either<AppException, void>> deleteDataFromFirestore(int userId) async {
+    try {
+      await _users.doc(userId.toString()).delete();
+      return right(null);
+    } on AppException catch (e) {
+      return left(e);
+    }
   }
 }
