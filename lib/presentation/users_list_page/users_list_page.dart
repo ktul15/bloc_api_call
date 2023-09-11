@@ -87,10 +87,36 @@ class _UsersListViewState extends State<UsersListView> {
                 );
               }),
             );
-          } else {
+          } else if (state is UsersListFailure) {
             debugPrint(state.toString());
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const Icon(Icons.error),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(state.error),
+                ],
+              ),
+            );
+          } else {
             return const Center(
-              child: Text("error"),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text("Unknown Error"),
+                ],
+              ),
             );
           }
         },
