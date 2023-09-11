@@ -29,13 +29,12 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
       UserDetailRequested event, Emitter<UserDetailState> emit) async {
     emit(UserDetailLoading());
 
-    try {
-      final user = await _usersRepository.fetchUserById(event.userId);
-      emit(UserDetailSuccess(user: user));
-    } on UserNotFoundFailure catch (e) {
-      emit(UserDetailFailure(error: e.toString()));
-      debugPrint("error from detail bloc : $e");
-    }
+    final res = await _usersRepository.fetchUserById(event.userId);
+
+    res.fold((error) {
+      emit(UserDetailFailure(error: error.toString()));
+      debugPrint("error from detail bloc : $error");
+    }, (user) => emit(UserDetailSuccess(user: user)));
   }
 
   Future<void> _onUserDetailAddToFirestore(

@@ -24,15 +24,21 @@ class UsersRepository {
     }
   }
 
-  Future<User> fetchUserById(int userId) async {
-    final res = await _apiClient.get("${ApiUrls.userEndpoint}/$userId");
+  Future<Either<AppException, User>> fetchUserById(int userId) async {
+    try {
+      final res = await _apiClient.get("${ApiUrls.userEndpoint}/$userId");
 
-    debugPrint("res: $res");
-    if (!res.containsKey('data')) {
-      throw UserNotFoundFailure();
+      debugPrint("res: $res");
+      if (!res.containsKey('data')) {
+        return left(UserNotFoundFailure());
+      }
+
+      final user = User.fromJson(res["data"]);
+
+      return right(user);
+    } on AppException catch (e) {
+      return left(e);
     }
-
-    return User.fromJson(res["data"]);
   }
 
   Future<void> addDataToFireStore(User user) async {

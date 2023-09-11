@@ -75,8 +75,25 @@ class _UserDetailViewState extends State<UserDetailView> {
               ],
             );
           }
-          return Center(
-            child: Text("error: $state"),
+          if (state is UserDetailFailure) {
+            return Center(
+              child: Column(children: [
+                const Icon(Icons.error),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(state.error)
+              ]),
+            );
+          }
+          return const Center(
+            child: Column(children: [
+              Icon(Icons.error),
+              SizedBox(
+                height: 16,
+              ),
+              Text("Unknown Error")
+            ]),
           );
         },
       ),
