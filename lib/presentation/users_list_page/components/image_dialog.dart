@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ImageDialog extends StatelessWidget {
@@ -13,7 +14,10 @@ class ImageDialog extends StatelessWidget {
         height: 200,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(imageUrl), fit: BoxFit.cover)),
+                image: CachedNetworkImageProvider(
+                  imageUrl,
+                ),
+                fit: BoxFit.cover)),
       ),
     );
   }

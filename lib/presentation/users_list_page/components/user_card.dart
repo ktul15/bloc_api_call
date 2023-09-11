@@ -25,6 +25,15 @@ class UserCard extends StatelessWidget {
             shape: BoxShape.circle,
             image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
           ),
+          child: GestureDetector(
+            onTap: () async {
+              await showDialog(
+                  context: context,
+                  builder: (_) => ImageDialog(
+                        imageUrl: "${user.avatar}",
+                      ));
+            },
+          ),
         ),
         placeholder: ((context, url) {
           return const CircularProgressIndicator();
