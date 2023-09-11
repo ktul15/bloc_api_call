@@ -5,6 +5,7 @@ import 'package:bloc_api_call_demo/utils/api_exceptions.dart';
 import 'package:bloc_api_call_demo/utils/api_urls.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 class UsersRepository {
   final ReqResApiClient _apiClient = ReqResApiClient();
@@ -12,10 +13,15 @@ class UsersRepository {
 
   CollectionReference get _users => _firebaseFirestore.collection("users");
 
-  Future<UsersList> fetchUsersByPage(int pageNum) async {
-    final res = await _apiClient.get("${ApiUrls.usersListEndpoint}$pageNum");
-    debugPrint("res: $res");
-    return UsersList.fromJson(res);
+  Future<Either<AppException, List<User>>> fetchUsersByPage(int pageNum) async {
+    try {
+      final res = await _apiClient.get("${ApiUrls.usersListEndpoint}$pageNum");
+      debugPrint("res: $res");
+      final usersList = UsersList.fromJson(res);
+      return right(usersList.data!);
+    } on AppException catch (e) {
+      return left(e);
+    }
   }
 
   Future<User> fetchUserById(int userId) async {

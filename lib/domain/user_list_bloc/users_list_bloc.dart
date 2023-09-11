@@ -37,9 +37,13 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
       debugPrint("users $users");
     }
 
-    try {
-      final usersList = await _usersRepository.fetchUsersByPage(pageToFetch);
-      users.addAll(usersList.data!);
+    final res = await _usersRepository.fetchUsersByPage(pageToFetch);
+
+    res.fold((error) {
+      debugPrint("error from bloc: $error");
+      emit(UsersListFailure(error: error.toString()));
+    }, (newUsers) {
+      users.addAll(newUsers);
       debugPrint("users: $users");
       emit(UsersListSuccess(
         users: users,
@@ -50,9 +54,6 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
       if ((state as UsersListSuccess).users.length < 12) {
         add(UsersListRequested());
       }
-    } catch (e) {
-      debugPrint("error from bloc: $e");
-      emit(UsersListFailure(error: e.toString()));
-    }
+    });
   }
 }
